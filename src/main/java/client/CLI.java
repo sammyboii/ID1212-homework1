@@ -32,8 +32,9 @@ public class CLI implements Runnable {
         while (connected) {
             Scanner scanner = new Scanner(System.in);
             String command = scanner.nextLine();
+            showInputSign();
             try {
-                this.controller.parseCommand(command);
+                this.controller.passCommand(command);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 showInputSign();

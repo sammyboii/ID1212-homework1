@@ -34,8 +34,29 @@ public class Net {
         this.connected = false;
     }
 
-    public void sendCommand(String command) throws IOException, ClassNotFoundException {
-        this.toServer.println(command);
+    void sendCommand(String command) throws IOException, ClassNotFoundException {
+        Thread commandSender = new Thread(new Talker(this,socket,command));
+        commandSender.start();
+    }
+
+    class Talker implements Runnable {
+        PrintWriter toServer;
+        String command;
+        Net net;
+
+        Talker(Net net, Socket socket, String command) {
+            try {
+                this.net = net;
+                this.command = command;
+                this.toServer = new PrintWriter(socket.getOutputStream(), true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void run () {
+            this.toServer.println(command);
+        }
     }
 
     class Listener implements Runnable {

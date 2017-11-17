@@ -34,12 +34,12 @@ class Server {
     private void startHandler (Socket clientSocket) throws SocketException {
         clientSocket.setSoLinger(true, LINGER_TIME);
         clientSocket.setSoTimeout(TIMEOUT_HALF_HOUR);
-        ClientHandler handler = new ClientHandler(this, clientSocket, "");
+        ClientHandler client = new ClientHandler(this, clientSocket, "");
         synchronized (this.clients) {
-            this.clients.add(handler);
+            this.clients.add(client);
             printClientStatus();
         }
-        Thread handlerThread = new Thread(handler);
+        Thread handlerThread = new Thread(client);
         handlerThread.setPriority(Thread.MAX_PRIORITY);
         handlerThread.start();
     }
